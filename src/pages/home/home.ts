@@ -10,6 +10,8 @@ import {
 	Marker
 } from '@ionic-native/google-maps';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { NativeStorage } from '@ionic-native/native-storage';
 
 @Component({
   selector: 'page-home',
@@ -19,12 +21,34 @@ export class HomePage {
 		map: GoogleMap;
 		watchId: any;
 		position: any;
-  constructor(public navCtrl: NavController, public geolocation: Geolocation) {
+  constructor(public navCtrl: NavController, public geolocation: Geolocation, public camera: Camera, public nativeStorage: NativeStorage) {
 		
   }
+
+  takePicture(){
+  	const cameraOptions = {
+  		quality: 100,
+  		destinationType: this.camera.DestinationType.FILE_URI,
+  		encodingType: this.camera.EncodingType.JPEG,
+  		mediaType: this.camera.MediaType.PICTURE,
+  		saveToPhotoAlbum: true
+  	};
+  	this.camera.getPicture(cameraOptions).then((imageData) => {
+  		this.nativeStorage.getItem('pictures').then(( pictures ) => {
+  			pictures.push({file: imageData});
+  			this.nativeStorage.setItem('pictures', pictures);
+  			alert(pictures);
+  		}).catch(( err ) => {
+  			this.nativeStorage.setItem('pictures', [{file: imageData}]);
+  			alert(err);
+  		});
+  	}).catch((err) => {
+  		alert(err.message);
+  	});
+  }
+
   ionViewDidLoad(){
   	this.geolocation.getCurrentPosition().then((position) => {
-  				alert("não erro");
   				this.position = {
   					target: {
   						lat: position.coords.latitude,
