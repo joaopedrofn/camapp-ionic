@@ -7,14 +7,18 @@ import { GoogleMaps } from '@ionic-native/google-maps';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Camera } from '@ionic-native/camera';
 import { NativeStorage } from '@ionic-native/native-storage';
+import { DeviceMotion } from '@ionic-native/device-motion';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { HomePage, InfoWindow } from '../pages/home/home';
+import { Image } from '../pages/image/image';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    Image,
+    InfoWindow
   ],
   imports: [
     BrowserModule,
@@ -23,7 +27,9 @@ import { HomePage } from '../pages/home/home';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    Image,
+    InfoWindow
   ],
   providers: [
     StatusBar,
@@ -32,6 +38,7 @@ import { HomePage } from '../pages/home/home';
     Geolocation,
     Camera,
     NativeStorage,
+    DeviceMotion,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
